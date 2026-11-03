@@ -8,10 +8,11 @@ module.exports = {
     titleTemplate: "%s · Bitácora Digital",
     description:
       "Blog estático sobre desarrollo web, buenas prácticas y generadores de sitios, creado con Gatsby.",
-    siteUrl: "https://christian-munar.github.io/bitacora-digital",
+    siteUrl: "https://chris-david-2000.github.io/blog",
     author: "Christian David Munar Benitez",
     lang: "es",
   },
+  pathPrefix: "/blog",
   plugins: [
     {
       resolve: "gatsby-source-filesystem",

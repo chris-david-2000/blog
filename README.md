@@ -7,6 +7,8 @@ Blog estático de tres entradas construido con **Gatsby 5** y **React 18** para 
 - **Institución:** Fundación Internacional de la Rioja
 - **Año:** 2026
 
+**Sitio publicado:** https://chris-david-2000.github.io/blog/
+
 ## Requisitos
 
 - Node.js 18 o superior (probado con Node.js 24)
@@ -34,6 +36,7 @@ La compilación genera la carpeta `public/`, que contiene el sitio estático lis
 
 ```text
 blog-gatsby/
+├── .github/workflows/    # Despliegue automático a GitHub Pages
 ├── content/posts/        # Entradas en Markdown con frontmatter
 ├── src/components/       # Componentes compartidos (Layout)
 ├── src/pages/            # Inicio, Acerca y página 404
@@ -61,37 +64,32 @@ tags: ["Etiqueta"]
 ---
 ```
 
-3. Escribir el contenido en Markdown. La ruta `/blog/nueva-entrada/` se genera automáticamente.
+3. Escribir el contenido en Markdown. La ruta `/entradas/nueva-entrada/` se genera automáticamente.
 
 ## Publicación
 
-### Netlify
+El sitio se publica automáticamente en GitHub Pages con el flujo definido en
+`.github/workflows/deploy.yml`. Cada envío a `main` compila el proyecto con
+`--prefix-paths` y despliega la carpeta `public/`.
+
+- **URL:** https://chris-david-2000.github.io/blog/
+- **Requisito la primera vez:** en **Settings → Pages**, elegir **GitHub Actions**
+  como origen del despliegue.
+- **Prefijo:** al ser un repositorio de proyecto, `gatsby-config.js` define
+  `pathPrefix: "/blog"`. Todas las rutas internas y las imágenes se generan con
+  `withPrefix`, de modo que funcionan bajo esa subruta.
+
+Compilación local equivalente:
+
+```bash
+npm run build -- --prefix-paths
+```
+
+### Netlify (alternativa)
 
 1. Subir el proyecto a un repositorio de GitHub.
 2. En Netlify, elegir **Add new site → Import an existing project**.
 3. Configurar:
    - Build command: `npm run build`
    - Publish directory: `public`
-4. Desplegar. Netlify entrega un enlace público con el formato `https://nombre-del-sitio.netlify.app`.
-
-### GitHub Pages
-
-Para un repositorio de proyecto (`https://usuario.github.io/nombre-repo/`) hay que indicar el prefijo de ruta. En `gatsby-config.js`:
-
-```js
-module.exports = {
-  pathPrefix: "/nombre-repo",
-  // ...
-}
-```
-
-Luego:
-
-```bash
-npm run build -- --prefix-paths
-npx gh-pages -d public
-```
-
-En **Settings → Pages** del repositorio, seleccionar la rama `gh-pages` como origen. El enlace público será `https://usuario.github.io/nombre-repo/`.
-
-> Al publicar, actualizar `siteMetadata.siteUrl` en `gatsby-config.js` con la dirección definitiva y pegar ese enlace en el documento de entrega.
+4. Desplegar. Netlify entrega un enlace público con el formato `https://nombre-del-sitio.netlify.app`. En ese caso conviene eliminar `pathPrefix` de `gatsby-config.js`.

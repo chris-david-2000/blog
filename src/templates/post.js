@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { Link, graphql, withPrefix } from "gatsby"
 import Layout from "../components/Layout"
 
 const formatDate = value => {
@@ -10,6 +10,12 @@ const formatDate = value => {
     year: "numeric",
   }).format(date)
 }
+
+const prefixAssetPaths = html =>
+  html.replace(
+    /(src|href)="(\/images\/[^"]+)"/g,
+    (match, attribute, path) => `${attribute}="${withPrefix(path)}"`
+  )
 
 const PostTemplate = ({ data }) => {
   const post = data.markdownRemark
@@ -40,7 +46,7 @@ const PostTemplate = ({ data }) => {
 
           <figure className="article-cover">
             <img
-              src={image}
+              src={withPrefix(image)}
               alt={`Ilustración de portada: ${title}`}
               width="1200"
               height="675"
@@ -49,7 +55,7 @@ const PostTemplate = ({ data }) => {
 
           <div
             className="prose"
-            dangerouslySetInnerHTML={{ __html: post.html }}
+            dangerouslySetInnerHTML={{ __html: prefixAssetPaths(post.html) }}
           />
 
           <footer className="article-footer">
@@ -78,7 +84,7 @@ export const Head = ({ data }) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="article" />
-      <meta property="og:image" content={image} />
+      <meta property="og:image" content={withPrefix(image)} />
     </>
   )
 }

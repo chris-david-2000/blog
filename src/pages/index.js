@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { Link, graphql, withPrefix } from "gatsby"
 import Layout from "../components/Layout"
 
 const formatDate = value => {
@@ -22,7 +22,7 @@ const IndexPage = ({ data }) => {
           <article>
             <span className="kicker">Entrada destacada</span>
             <h1 className="lead-title">
-              <Link to={`/blog/${lead.frontmatter.slug}/`}>
+              <Link to={`/entradas/${lead.frontmatter.slug}/`}>
                 {lead.frontmatter.title}
               </Link>
             </h1>
@@ -30,7 +30,7 @@ const IndexPage = ({ data }) => {
 
             <figure className="lead-figure">
               <img
-                src={lead.frontmatter.image}
+                src={withPrefix(lead.frontmatter.image)}
                 alt=""
                 width="1200"
                 height="675"
@@ -53,7 +53,7 @@ const IndexPage = ({ data }) => {
               </p>
               <Link
                 className="read-on"
-                to={`/blog/${lead.frontmatter.slug}/`}
+                to={`/entradas/${lead.frontmatter.slug}/`}
               >
                 Leer la entrada completa →
               </Link>
@@ -66,7 +66,7 @@ const IndexPage = ({ data }) => {
               {rest.map(post => (
                 <li key={post.frontmatter.slug}>
                   <h3>
-                    <Link to={`/blog/${post.frontmatter.slug}/`}>
+                    <Link to={`/entradas/${post.frontmatter.slug}/`}>
                       {post.frontmatter.title}
                     </Link>
                   </h3>
@@ -103,21 +103,27 @@ const IndexPage = ({ data }) => {
               return (
                 <article className="post-card" key={slug}>
                   <Link
-                    to={`/blog/${slug}/`}
+                    to={`/entradas/${slug}/`}
                     className="post-card-media"
                     tabIndex={-1}
                     aria-hidden="true"
                   >
-                    <img src={image} alt="" loading="lazy" width="1200" height="750" />
+                    <img
+                      src={withPrefix(image)}
+                      alt=""
+                      loading="lazy"
+                      width="1200"
+                      height="750"
+                    />
                   </Link>
                   <span className="tag">{tags[0]}</span>
                   <h3>
-                    <Link to={`/blog/${slug}/`}>{title}</Link>
+                    <Link to={`/entradas/${slug}/`}>{title}</Link>
                   </h3>
                   <p>{description}</p>
                   <div className="post-meta">
                     <time dateTime={date}>{formatDate(date)}</time>
-                    <Link to={`/blog/${slug}/`} className="read-more">
+                    <Link to={`/entradas/${slug}/`} className="read-more">
                       Leer entrada →
                     </Link>
                   </div>
@@ -190,7 +196,7 @@ export const Head = () => (
       content="Blog estático de tres entradas sobre desarrollo web, construido con Gatsby y React."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/images/post-1.png" />
+    <meta property="og:image" content={withPrefix("/images/post-1.png")} />
   </>
 )
 
